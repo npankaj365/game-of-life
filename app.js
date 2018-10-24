@@ -26,7 +26,7 @@ var generate_table = function(r, c){
     btn.innerText = "Next Gen";
     btn.id = "next_gen_btn";
     btn.addEventListener("click", function(){
-        next_gen(r, c);
+        start_gens(r,c);
     });
     body.appendChild(btn);
 
@@ -39,6 +39,10 @@ var generate_table = function(r, c){
             cells[i].className = "inactive";
     });
     body.appendChild(btn2);
+}
+
+var start_gens = function(r, c){
+    var interval_r = setInterval(function(){next_gen(r, c)}, 1500);
 }
 
 //Douglas Crockford's Array Extension
