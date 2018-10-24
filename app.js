@@ -42,10 +42,23 @@ var generate_table = function(r, c){
     body.appendChild(btn2);
 }
 
+//Douglas Crockford's Array Extension
+Array.matrix = function(numrows, numcols, initial){
+    var arr = [];
+    for (var i = 0; i < numrows; ++i){
+       var columns = [];
+       for (var j = 0; j < numcols; ++j){
+          columns[j] = initial;
+       }
+       arr[i] = columns;
+     }
+     return arr;
+ }
+
 var next_gen = function(r, c){
     var tbl_body = document.getElementById("grid_body");
     var t_row, t_cell;
-    var neighbors  = [[]];
+    var neighbors = Array.matrix(r,c,0);
     for(var i=0; i<r; i++){
         t_row = tbl_body.childNodes[i];
         for(var j=0; j<c; j++){
@@ -61,16 +74,18 @@ var next_gen = function(r, c){
     console.log("Reached Here");
     for (var i=0; i<r; i++){
         console.log("Reached Here 2");
+        t_row = tbl_body.childNodes[i];
         for(var j=0; j<c; j++){
+            t_cell = t_row.childNodes[j];
             console.log("Reached Here 3");
-            //Underpopulation
-            if (neighbors[i][j] < 2)
+            
+            if (neighbors[i][j] < 2) //Underpopulation
                 t_cell.className = "inactive";
-            else if (neighbors[i][j] > 3)
+            else if (neighbors[i][j] > 3) //Overpopulation
                 t_cell.className = "inactive";
-            else if (neighbors[i][j] == 2 || neighbors[i][j] == 3)
+            else if (t_cell.className == "active" && (neighbors[i][j] == 2 || neighbors[i][j] == 3)) //Staying in Place
                 t_cell.className = t_cell.className;
-            else
+            else if (t_cell.className == "inactive" && neighbors[i][j] == 3) //Procreation
                 t_cell.className = "active";
         }
     }
@@ -88,10 +103,10 @@ var findActiveNeighbors = function(r, c, rr, cc) {
     let count = 0;
     let tbl_body = document.getElementById("grid_body");
     let t_row, t_cell;
-    var r_min = (r==0)?r:r-1;//0
-    var r_max = (r==rr-1)?r:r+1;//2
-    var c_min = (c==0)?c:c-1;//0
-    var c_max = (c==cc-1)?c:c+1;//1
+    var r_min = (r==0)?r:r-1;
+    var r_max = (r==rr-1)?r:r+1;
+    var c_min = (c==0)?c:c-1;
+    var c_max = (c==cc-1)?c:c+1;
     console.log("Before the loop, we have r_min:" + r_min + " r_max:" + r_max + " c_min:" + c_min + " c_max:" + c_max);
     for(var i=r_min; i<=r_max; i++){
         console.log("Start of Row:" + i);
