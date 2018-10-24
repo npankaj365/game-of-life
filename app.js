@@ -34,15 +34,24 @@ var generate_table = function(r, c){
     btn2.innerText = "Clear";
     btn2.id = "clear_btn";
     btn2.addEventListener("click", function(){
+        clearInterval(interval_r);
         var cells = document.getElementsByTagName("td");
-        for(var i=0; i<cells.length; i++)
+        for(var i=0; i<cells.length; i++){
             cells[i].className = "inactive";
+        }
     });
     body.appendChild(btn2);
+
 }
 
+var interval_r;
+
 var start_gens = function(r, c){
-    var interval_r = setInterval(function(){next_gen(r, c)}, 1500);
+    interval_r = setInterval(function(){next_gen(r, c)}, 1500);
+}
+
+var stop_gens = function(){
+    clearInterval(interval_r);
 }
 
 //Douglas Crockford's Array Extension
