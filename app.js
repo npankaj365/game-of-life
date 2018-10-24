@@ -9,7 +9,6 @@ var generate_table = function(r, c){
     var tbl = document.createElement("table");
     var tbl_body = document.createElement("tbody");
     tbl_body.setAttribute("id", "grid_body");
-    console.log("Received ", r, c)
     for(var i=0; i<r; i++){
         var row = tbl_body.insertRow(-1);
         for(var j=0; j<c; j++){
@@ -63,21 +62,14 @@ var next_gen = function(r, c){
         t_row = tbl_body.childNodes[i];
         for(var j=0; j<c; j++){
             t_cell = t_row.childNodes[j];
-            // changeState(t_cell);
-            console.log("Going to count neighbors for " + i + ":" + j);
             neighbors[i][j] = findActiveNeighbors(i, j, r, c);
-            console.log("Neighbors counted for " + i + ":" + j);
-            // console.log("Neighbors of " + i + ":" + j + " is " + findActiveNeighbors(i, j, r, c));
-            // t_cell.innerText = neighbors[i][j];
+            // t_cell.innerText = neighbors[i][j]; // Useful to see the number of active neighbors
         }
     }
-    console.log("Reached Here");
     for (var i=0; i<r; i++){
-        console.log("Reached Here 2");
         t_row = tbl_body.childNodes[i];
         for(var j=0; j<c; j++){
             t_cell = t_row.childNodes[j];
-            console.log("Reached Here 3");
             
             if (neighbors[i][j] < 2) //Underpopulation
                 t_cell.className = "inactive";
@@ -99,7 +91,6 @@ var changeState = function(cell) {
 }
 
 var findActiveNeighbors = function(r, c, rr, cc) {
-    console.log("Looking for neighbors of Cell " + r + ":" + c);
     let count = 0;
     let tbl_body = document.getElementById("grid_body");
     let t_row, t_cell;
@@ -107,21 +98,15 @@ var findActiveNeighbors = function(r, c, rr, cc) {
     var r_max = (r==rr-1)?r:r+1;
     var c_min = (c==0)?c:c-1;
     var c_max = (c==cc-1)?c:c+1;
-    console.log("Before the loop, we have r_min:" + r_min + " r_max:" + r_max + " c_min:" + c_min + " c_max:" + c_max);
     for(var i=r_min; i<=r_max; i++){
-        console.log("Start of Row:" + i);
         t_row = tbl_body.childNodes[i];
         for(var j=c_min; j<=c_max; j++){
             t_cell = t_row.childNodes[j];
-            console.log("Currently at cell:" + i + ":" + j);
             if(t_cell.className == "active" && !(i==r && j==c))
             {
                 count++;
-                console.log("Count increased for cell:"+ i + ":" + j + " to " + count);
             }    
         }
-        console.log("Completion of Row:"+i);
     }
-    console.log("Returning count for Cell "+ r + ":" + c);
     return count;
 }
